@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-palette-card',
@@ -25,15 +26,56 @@ export class PaletteCardComponent implements OnInit {
   colors = [];
 
   ngOnInit() {
-    this.colors.push([245, 239, 227]);
-    this.colors.push([230, 231, 229]);
-    this.colors.push([247, 211, 186]);
-    this.colors.push([166, 170, 156]);
+    this.generateColors();
+  }
+
+  generateColors() {
+    const random = (min, max) => {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
+    // const r1 = random(0, 255);
+    // const g1 = random(0, 255);
+    // const b1 = random(0, 255);
+
+    let r1 = random(0, 255);
+    let g1 = random(0, 255);
+    let b1 = random(0, 255);
+
+    r1 = Math.floor((255 + r1) / 2);
+    g1 = Math.floor((255 + g1) / 2);
+    b1 = Math.floor((255 + b1) / 2);
+
+    this.colors[0] = [r1, g1, b1];
+
+    let r2 = random(0, 255);
+    let g2 = random(0, 255);
+    let b2 = random(0, 255);
+
+    r2 = Math.floor((r2 + r1) / 2);
+    g2 = Math.floor((g2 + g1) / 2);
+    b2 = Math.floor((b2 + b1) / 2);
+    this.colors[1] = [r2, g2, b2];
+
+    let r3 = random(0, 255);
+    let g3 = random(0, 255);
+    let b3 = random(0, 255);
+
+    r3 = Math.floor((r3 + r2) / 2);
+    g3 = Math.floor((g3 + g2) / 2);
+    b3 = Math.floor((b3 + b2) / 2);
+    this.colors[2] = [r3, g3, b3];
+
+    let r4 = random(0, 255);
+    let g4 = random(0, 255);
+    let b4 = random(0, 255);
+
+    r4 = Math.floor((r4 + r3) / 2);
+    g4 = Math.floor((g4 + g3) / 2);
+    b4 = Math.floor((b4 + b3) / 2);
+    this.colors[3] = [r4, g4, b4];
 
     this.updateColorStyles();
-  }
-  onRefreshClick() {
-    alert();
   }
 
   getTextColor(rgb) {
@@ -73,5 +115,12 @@ export class PaletteCardComponent implements OnInit {
       .join('')
       .toUpperCase();
     return `#${hex}`;
+  }
+
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === ' ') {
+      this.generateColors();
+    }
   }
 }
