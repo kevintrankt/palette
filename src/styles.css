@@ -1,13 +1,8 @@
-body {
-  background: #ffcccc;
-  height: 100vh;
-  width: 100vw;
-  margin: 0;
-}
-
 html,
 body {
-  margin: 0;
+  background: #ffcccc;
   height: 100%;
+  width: 100vw;
+  margin: 0;
   overflow: hidden;
 }
