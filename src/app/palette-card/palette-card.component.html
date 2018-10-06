@@ -1,22 +1,23 @@
 <div class="container">
   <div class="card">
     <div class="colors">
-      <div class="color" id="color1">
-        <p class="color-hex">#F5EFE3</p>
+      <div class="color" id="color1" [ngStyle]="{'background-color':color1}">
+        <p class="color-hex" [ngStyle]="{'color':color1Text}">{{color1Value}}</p>
       </div>
-      <div class="color" id="color2">
-        <p class="color-hex">#F5EFE3</p>
+      <div class="color" id="color2" [ngStyle]="{'background-color':color2}">
+        <p class="color-hex" [ngStyle]="{'color':color2Text}">{{color2Value}}</p>
 
       </div>
-      <div class="color" id="color3">
-        <p class="color-hex">#F5EFE3</p>
+      <div class="color" id="color3" [ngStyle]="{'background-color':color3}">
+        <p class="color-hex" [ngStyle]="{'color':color3Text}">{{color3Value}}</p>
 
       </div>
-      <div class="color" id="color4">
-        <p class="color-hex">#F5EFE3</p>
+      <div class="color" id="color4" [ngStyle]="{'background-color':color4}">
+        <p class="color-hex" [ngStyle]="{'color':color4Text}">{{color4Value}}</p>
 
       </div>
-      <div class="icon-container"> <i class="fas fa-redo-alt icon"></i>
+      <div class="icon-container">
+        <i class="fas fa-redo-alt icon" (click)="onRefreshClick()"></i>
       </div>
     </div>
   </div>
