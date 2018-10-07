@@ -48,8 +48,6 @@ export class PaletteCardComponent implements OnInit {
     const lockedB = [255];
 
     for (const field of Object.keys(this.colorData)) {
-      // const rgb = this.colorData[field];
-      // const lock = this.colorData[field].lock;
       const { rgb, lock } = this.colorData[field];
       if (lock) {
         locked.push(field);
@@ -57,6 +55,10 @@ export class PaletteCardComponent implements OnInit {
         lockedG.push(rgb[1]);
         lockedB.push(rgb[2]);
       }
+    }
+
+    if (locked.length === 4) {
+      this.displayMessage('unlock a color to generate more');
     }
 
     let baseR = lockedR.reduce((sum, value) => sum + value) / lockedR.length;
@@ -136,84 +138,6 @@ export class PaletteCardComponent implements OnInit {
       blue = Math.floor((blue + c.rgb[2] - 50) / 3);
       d.rgb = [red, green, blue];
     }
-
-    this.updateColorStyles();
-  }
-
-  generateColors() {
-    const { a, b, c, d } = this.colorData;
-    const random = (min, max) => {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    };
-
-    // Color 1
-    let r1 = random(0, 255);
-    let g1 = random(0, 255);
-    let b1 = random(0, 255);
-
-    r1 = Math.floor((255 + r1) / 2);
-    g1 = Math.floor((255 + g1) / 2);
-    b1 = Math.floor((255 + b1) / 2);
-
-    a.rgb = [r1, g1, b1];
-
-    // Color 2
-    let r2 = random(0, r1);
-    let g2 = random(0, g1);
-    let b2 = random(0, b1);
-
-    r2 = Math.floor((r2 + r1) / 2);
-    g2 = Math.floor((g2 + g1) / 2);
-    b2 = Math.floor((b2 + b1) / 2);
-
-    while (
-      Math.abs(r1 - r2) < 10 &&
-      Math.abs(b1 - b2) < 10 &&
-      Math.abs(g1 - g2) < 10
-    ) {
-      r2 = random(0, 255);
-      g2 = random(0, 255);
-      b2 = random(0, 255);
-
-      r2 = Math.floor((r2 + r1) / 2);
-      g2 = Math.floor((g2 + g1) / 2);
-      b2 = Math.floor((b2 + b1) / 2);
-    }
-    b.rgb = [r2, g2, b2];
-
-    // Color 3
-    let r3 = random(0, 255);
-    let g3 = random(0, 255);
-    let b3 = random(0, 255);
-
-    r3 = Math.floor((r3 + r2) / 2) - 20;
-    g3 = Math.floor((g3 + g2) / 2) - 20;
-    b3 = Math.floor((b3 + b2) / 2) - 20;
-
-    while (
-      Math.abs(r2 - r3) < 10 &&
-      Math.abs(b2 - b3) < 10 &&
-      Math.abs(g2 - g3) < 10
-    ) {
-      r3 = random(0, 255);
-      g3 = random(0, 255);
-      b3 = random(0, 255);
-
-      r3 = Math.floor((r2 + r1) / 2);
-      g3 = Math.floor((g2 + g1) / 2);
-      b3 = Math.floor((b2 + b1) / 2);
-    }
-    c.rgb = [r3, g3, b3];
-
-    // Color 4
-    let r4 = random(0, r1);
-    let g4 = random(0, r2);
-    let b4 = random(0, r3);
-
-    r4 = Math.floor((r4 + r3 - 50) / 3);
-    g4 = Math.floor((g4 + g3 - 50) / 3);
-    b4 = Math.floor((b4 + b3 - 50) / 3);
-    d.rgb = [r4, g4, b4];
 
     this.updateColorStyles();
   }
