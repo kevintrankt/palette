@@ -61,18 +61,18 @@ export class PaletteCardComponent implements OnInit {
     let g3 = random(0, 255);
     let b3 = random(0, 255);
 
-    r3 = Math.floor((r3 + r2) / 2);
-    g3 = Math.floor((g3 + g2) / 2);
-    b3 = Math.floor((b3 + b2) / 2);
+    r3 = Math.floor((r3 + r2) / 2) - 20;
+    g3 = Math.floor((g3 + g2) / 2) - 20;
+    b3 = Math.floor((b3 + b2) / 2) - 20;
     this.colors[2] = [r3, g3, b3];
 
     let r4 = random(0, 255);
     let g4 = random(0, 255);
     let b4 = random(0, 255);
 
-    r4 = Math.floor((r4 + r3) / 2);
-    g4 = Math.floor((g4 + g3) / 2);
-    b4 = Math.floor((b4 + b3) / 2);
+    r4 = Math.floor((r4 + r3) / 2) - 50;
+    g4 = Math.floor((g4 + g3) / 2) - 50;
+    b4 = Math.floor((b4 + b3) / 2) - 50;
     this.colors[3] = [r4, g4, b4];
 
     this.updateColorStyles();
@@ -111,10 +111,42 @@ export class PaletteCardComponent implements OnInit {
 
   rgbToHex(rgb) {
     const hex = rgb
-      .map(x => x.toString(16))
+      .map(x => {
+        let value = x > 0 ? x.toString(16) : 0;
+        if (value.length === 1) {
+          value = '0' + value;
+        }
+        return value;
+      })
       .join('')
       .toUpperCase();
-    return `#${hex}`;
+    return `${hex}`;
+  }
+
+  copyTextToClipboard(text) {
+    var txtArea = document.createElement('textarea');
+    txtArea.id = 'txt';
+    txtArea.style.position = 'fixed';
+    txtArea.style.top = '0';
+    txtArea.style.left = '0';
+    txtArea.style.opacity = '0';
+    txtArea.value = text;
+    document.body.appendChild(txtArea);
+    txtArea.select();
+
+    try {
+      var successful = document.execCommand('copy');
+      var msg = successful ? 'successful' : 'unsuccessful';
+      console.log('Copying text command was ' + msg);
+      if (successful) {
+        return true;
+      }
+    } catch (err) {
+      console.log('Oops, unable to copy');
+    } finally {
+      document.body.removeChild(txtArea);
+    }
+    return false;
   }
 
   @HostListener('document:keypress', ['$event'])
