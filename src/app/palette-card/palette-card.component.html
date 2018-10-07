@@ -8,38 +8,51 @@
     <div class="colors">
 
       <div class="color" id="color1" [ngStyle]="{'background-color':colorData.a.rgbString}">
-        <p class="lock" [ngStyle]="{'color':colorData.a.textColor}">
+        <p class="action-icons" [ngStyle]="{'color':colorData.a.textColor}">
+          <i (click)="copyTextToClipboard(colorData.a.hex)" class="fas fa-copy clipboard"></i>
           <i (click)="toggleLock('a')" *ngIf="!colorData.a.lock" class="fas fa-unlock-alt"></i>
           <i (click)="toggleLock('a')" *ngIf="colorData.a.lock" class="fas fa-lock"></i>
         </p>
-        <p class="color-hex" [ngStyle]="{'color':colorData.a.textColor}" (click)="copyTextToClipboard(colorData.a.hex)">#{{colorData.a.hex}}</p>
+        <p class="color-hex" [ngStyle]="{'color':colorData.a.textColor}">
+          #<span contenteditable class="hex" (keypress)="editColor('a', $event)" (click)="clickHex()">{{colorData.a.hex}}</span>
+        </p>
       </div>
 
       <div class="color" id="color2" [ngStyle]="{'background-color':colorData.b.rgbString}">
-        <p class="lock" [ngStyle]="{'color':colorData.b.textColor}">
+        <p class="action-icons" [ngStyle]="{'color':colorData.b.textColor}">
+          <i (click)="copyTextToClipboard(colorData.b.hex)" class="fas fa-copy clipboard"></i>
           <i (click)="toggleLock('b')" *ngIf="!colorData.b.lock" class="fas fa-unlock-alt"></i>
           <i (click)="toggleLock('b')" *ngIf="colorData.b.lock" class="fas fa-lock"></i>
         </p>
-        <p class="color-hex" [ngStyle]="{'color':colorData.b.textColor}" (click)="copyTextToClipboard(colorData.b.hex)">#{{colorData.b.hex}}</p>
+        <p class="color-hex" [ngStyle]="{'color':colorData.b.textColor}">
+          #<span contenteditable class="hex" (keypress)="editColor('b', $event)" (click)="clickHex()">{{colorData.b.hex}}</span>
+        </p>
       </div>
 
       <div class="color" id="color3" [ngStyle]="{'background-color':colorData.c.rgbString}">
-        <p class="lock" [ngStyle]="{'color':colorData.c.textColor}">
+        <p class="action-icons" [ngStyle]="{'color':colorData.c.textColor}">
+          <i (click)="copyTextToClipboard(colorData.c.hex)" class="fas fa-copy clipboard"></i>
           <i (click)="toggleLock('c')" *ngIf="!colorData.c.lock" class="fas fa-unlock-alt"></i>
           <i (click)="toggleLock('c')" *ngIf="colorData.c.lock" class="fas fa-lock"></i>
         </p>
-        <p class="color-hex" [ngStyle]="{'color':colorData.c.textColor}" (click)="copyTextToClipboard(colorData.c.hex)">#{{colorData.c.hex}}</p>
+        <p class="color-hex" [ngStyle]="{'color':colorData.c.textColor}">
+          #<span contenteditable class="hex" (keypress)="editColor('c', $event)" (click)="clickHex()">{{colorData.c.hex}}</span>
+        </p>
       </div>
 
       <div class="color" id="color4" [ngStyle]="{'background-color':colorData.d.rgbString}">
-        <p class="lock" [ngStyle]="{'color':colorData.d.textColor}">
+        <p class="action-icons" [ngStyle]="{'color':colorData.d.textColor}">
+          <i (click)="copyTextToClipboard(colorData.d.hex)" class="fas fa-copy clipboard"></i>
           <i (click)="toggleLock('d')" *ngIf="!colorData.d.lock" class="fas fa-unlock-alt"></i>
           <i (click)="toggleLock('d')" *ngIf="colorData.d.lock" class="fas fa-lock"></i>
         </p>
-        <p class="color-hex" [ngStyle]="{'color':colorData.d.textColor}" (click)="copyTextToClipboard(colorData.d.hex)">#{{colorData.d.hex}}</p>
+        <p class="color-hex" [ngStyle]="{'color':colorData.d.textColor}">
+          #<span contenteditable class="hex" (keypress)="editColor('d', $event)" (click)="clickHex()">{{colorData.d.hex}}</span>
+        </p>
       </div>
 
-      <div class="icon-container">
+      <div class="
+            icon-container">
         <i class="fas fa-redo-alt icon" (click)="generateColor()"></i>
       </div>
 

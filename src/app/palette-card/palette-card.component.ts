@@ -12,6 +12,7 @@ export class PaletteCardComponent implements OnInit {
 
   message;
   showMessage;
+  runs = 0;
 
   ngOnInit() {
     this.colorData = {};
@@ -32,7 +33,7 @@ export class PaletteCardComponent implements OnInit {
       function() {
         this.showMessage = false;
       }.bind(this),
-      1500
+      2000
     );
   }
 
@@ -42,6 +43,21 @@ export class PaletteCardComponent implements OnInit {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
+    this.runs++;
+
+    switch (this.runs) {
+      case 2:
+        this.displayMessage('lock a color to keep it from changing');
+        break;
+      case 3:
+        this.displayMessage('paste your own hex values in');
+        break;
+      case 4:
+        this.displayMessage('forks are welcome!');
+        break;
+      default:
+        break;
+    }
     const locked = [];
     const lockedR = [255];
     const lockedG = [255];
@@ -61,9 +77,9 @@ export class PaletteCardComponent implements OnInit {
       this.displayMessage('unlock a color to generate more');
     }
 
-    let baseR = lockedR.reduce((sum, value) => sum + value) / lockedR.length;
-    let baseG = lockedG.reduce((sum, value) => sum + value) / lockedR.length;
-    let baseB = lockedB.reduce((sum, value) => sum + value) / lockedR.length;
+    const baseR = lockedR.reduce((sum, value) => sum + value) / lockedR.length;
+    const baseG = lockedG.reduce((sum, value) => sum + value) / lockedR.length;
+    const baseB = lockedB.reduce((sum, value) => sum + value) / lockedR.length;
 
     if (!a.lock) {
       let red = random(0, 255);
@@ -180,12 +196,19 @@ export class PaletteCardComponent implements OnInit {
     return `${hex}`;
   }
 
+  hexToRgb(hex) {
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    return [r, g, b];
+  }
+
   toggleLock(lock) {
     this.colorData[lock].lock = !this.colorData[lock].lock;
   }
 
   copyTextToClipboard(text) {
-    var txtArea = document.createElement('textarea');
+    const txtArea = document.createElement('textarea');
     txtArea.id = 'txt';
     txtArea.style.position = 'fixed';
     txtArea.style.top = '0';
@@ -196,8 +219,8 @@ export class PaletteCardComponent implements OnInit {
     txtArea.select();
 
     try {
-      var successful = document.execCommand('copy');
-      var msg = successful ? 'successful' : 'unsuccessful';
+      const successful = document.execCommand('copy');
+      const msg = successful ? 'successful' : 'unsuccessful';
       console.log('Copying text command was ' + msg);
       if (successful) {
         this.displayMessage('hex value copied to clipboard!');
@@ -209,6 +232,45 @@ export class PaletteCardComponent implements OnInit {
       document.body.removeChild(txtArea);
     }
     return false;
+  }
+
+  editColor(color, event) {
+    const len = event.target.innerText.trim().length;
+    const selection = window.getSelection().type;
+
+    if (event.keyCode === 13 || event.key === ' ') {
+      event.preventDefault();
+
+      const tmp = document.createElement('input');
+      document.body.appendChild(tmp);
+      tmp.focus();
+      document.body.removeChild(tmp);
+
+      const hex = event.target.innerHTML;
+      if (hex.length === 6) {
+        const rgb = this.hexToRgb(hex);
+
+        this.colorData[color].rgb = rgb;
+        this.colorData[color].lock = true;
+
+        this.generateColor();
+      } else {
+        this.displayMessage('hex values need 6 digits');
+        event.target.innerHTML = this.colorData[color].hex;
+      }
+    }
+
+    let re = new RegExp('[a-fA-F0-9]');
+
+    if ((len >= 6 && selection === 'Caret') || !re.test(event.key)) {
+      event.preventDefault();
+      return false;
+    }
+    console.log(len);
+  }
+
+  clickHex() {
+    this.displayMessage('enter your own colors!');
   }
 
   @HostListener('document:keypress', ['$event'])

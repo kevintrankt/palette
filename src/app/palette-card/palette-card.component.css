@@ -29,6 +29,10 @@
   margin-left: 28px;
 }
 
+.clipboard {
+  margin-right: 6px;
+}
+
 .color-hex {
   font-family: 'Rubik', sans-serif;
   font-size: 13px;
@@ -36,6 +40,7 @@
   bottom: 8px;
   left: 6px;
   margin: 0;
+
   cursor: pointer;
 }
 
@@ -51,6 +56,10 @@
   cursor: pointer;
 }
 
+.hex {
+  margin: 0;
+}
+
 .display-msg {
   position: fixed;
   top: 15vh;
@@ -60,11 +69,14 @@
   color: #adadad;
 }
 
-.lock {
+.action-icons {
   margin: 0;
   position: absolute;
   top: 8px;
   right: 8px;
+}
+
+.fas {
   cursor: pointer;
 }
 
