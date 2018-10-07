@@ -1,42 +1,48 @@
-<div class="display-msg animated" [ngClass]="{'fadeIn': showMessage == true,'fadeOut': showMessage == false  }">{{message}}</div>
+<div class="display-msg animated" [ngClass]="{'fadeIn': showMessage == true,'fadeOut': showMessage == false}">
+  {{message}}
+</div>
 
 <div class=" container">
   <div class="card">
+
     <div class="colors">
-      <div class="color" id="color1" [ngStyle]="{'background-color':color1}">
-        <p class="lock" [ngStyle]="{'color':color1Text}">
-          <i (click)="toggleLock(1)" *ngIf="!color1lock" class="fas fa-unlock-alt"></i>
-          <i (click)="toggleLock(1)" *ngIf="color1lock" class="fas fa-lock"></i>
-        </p>
-        <p class="color-hex" [ngStyle]="{'color':color1Text}" (click)="copyTextToClipboard(color1Value)">#{{color1Value}}</p>
-      </div>
-      <div class="color" id="color2" [ngStyle]="{'background-color':color2}">
-        <p class="lock" [ngStyle]="{'color':color2Text}">
-          <i *ngIf="!color2lock" class="fas fa-unlock-alt"></i>
-          <i *ngIf="color2lock" class="fas fa-lock"></i>
-        </p>
-        <p class="color-hex" [ngStyle]="{'color':color2Text}" (click)="copyTextToClipboard(color2Value)">#{{color2Value}}</p>
 
-      </div>
-      <div class="color" id="color3" [ngStyle]="{'background-color':color3}">
-        <p class="lock" [ngStyle]="{'color':color3Text}">
-          <i *ngIf="!color3lock" class="fas fa-unlock-alt"></i>
-          <i *ngIf="color3lock" class="fas fa-lock"></i>
+      <div class="color" id="color1" [ngStyle]="{'background-color':colorData.a.rgbString}">
+        <p class="lock" [ngStyle]="{'color':colorData.a.textColor}">
+          <i (click)="toggleLock('a')" *ngIf="!colorData.a.lock" class="fas fa-unlock-alt"></i>
+          <i (click)="toggleLock('a')" *ngIf="colorData.a.lock" class="fas fa-lock"></i>
         </p>
-        <p class="color-hex" [ngStyle]="{'color':color3Text}" (click)="copyTextToClipboard(color3Value)">#{{color3Value}}</p>
-
+        <p class="color-hex" [ngStyle]="{'color':colorData.a.textColor}" (click)="copyTextToClipboard(colorData.a.hex)">#{{colorData.a.hex}}</p>
       </div>
-      <div class="color" id="color4" [ngStyle]="{'background-color':color4}">
-        <p class="lock" [ngStyle]="{'color':color4Text}">
-          <i *ngIf="!color4lock" class="fas fa-unlock-alt"></i>
-          <i *ngIf="color4lock" class="fas fa-lock"></i>
+
+      <div class="color" id="color2" [ngStyle]="{'background-color':colorData.b.rgbString}">
+        <p class="lock" [ngStyle]="{'color':colorData.b.textColor}">
+          <i (click)="toggleLock('b')" *ngIf="!colorData.b.lock" class="fas fa-unlock-alt"></i>
+          <i (click)="toggleLock('b')" *ngIf="colorData.b.lock" class="fas fa-lock"></i>
         </p>
-        <p class="color-hex" [ngStyle]="{'color':color4Text}" (click)="copyTextToClipboard(color4Value)">#{{color4Value}}</p>
-
+        <p class="color-hex" [ngStyle]="{'color':colorData.b.textColor}" (click)="copyTextToClipboard(colorData.b.hex)">#{{colorData.b.hex}}</p>
       </div>
+
+      <div class="color" id="color3" [ngStyle]="{'background-color':colorData.c.rgbString}">
+        <p class="lock" [ngStyle]="{'color':colorData.c.textColor}">
+          <i (click)="toggleLock('c')" *ngIf="!colorData.c.lock" class="fas fa-unlock-alt"></i>
+          <i (click)="toggleLock('c')" *ngIf="colorData.c.lock" class="fas fa-lock"></i>
+        </p>
+        <p class="color-hex" [ngStyle]="{'color':colorData.c.textColor}" (click)="copyTextToClipboard(colorData.c.hex)">#{{colorData.c.hex}}</p>
+      </div>
+
+      <div class="color" id="color4" [ngStyle]="{'background-color':colorData.d.rgbString}">
+        <p class="lock" [ngStyle]="{'color':colorData.d.textColor}">
+          <i (click)="toggleLock('d')" *ngIf="!colorData.d.lock" class="fas fa-unlock-alt"></i>
+          <i (click)="toggleLock('d')" *ngIf="colorData.d.lock" class="fas fa-lock"></i>
+        </p>
+        <p class="color-hex" [ngStyle]="{'color':colorData.d.textColor}" (click)="copyTextToClipboard(colorData.d.hex)">#{{colorData.d.hex}}</p>
+      </div>
+
       <div class="icon-container">
         <i class="fas fa-redo-alt icon" (click)="generateColors()"></i>
       </div>
+
     </div>
   </div>
 </div>

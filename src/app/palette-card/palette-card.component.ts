@@ -10,38 +10,17 @@ export class PaletteCardComponent implements OnInit {
   constructor() {}
   colorData = {};
 
-  color1; // rename to rgb String
-  color2;
-  color3;
-  color4;
-
-  color1Text; // text color
-  color2Text;
-  color3Text;
-  color4Text;
-
-  color1Value; // rename to hex
-  color2Value;
-  color3Value;
-  color4Value;
-
-  colors = []; // rename to rgb
-
   message;
   showMessage;
 
-  color1lock = false; // rename to lock
-  color2lock = false;
-  color3lock = false;
-  color4lock = false;
-
   ngOnInit() {
-    this.colorData['a'] = {};
-    this.colorData['b'] = {};
-    this.colorData['c'] = {};
-    this.colorData['d'] = {};
+    this.colorData['a'] = { lock: false };
+    this.colorData['b'] = { lock: false };
+    this.colorData['c'] = { lock: false };
+    this.colorData['d'] = { lock: false };
 
-    this.generateColors();
+    // this.generateColors();
+    this.generateColor();
     this.displayMessage('press space to generate palettes');
   }
 
@@ -52,17 +31,121 @@ export class PaletteCardComponent implements OnInit {
       function() {
         this.showMessage = false;
       }.bind(this),
-      1000
+      1500
     );
   }
 
+  generateColor() {
+    const { a, b, c, d } = this.colorData;
+    const random = (min, max) => {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
+    const locked = [];
+    const lockedR = [255];
+    const lockedG = [255];
+    const lockedB = [255];
+
+    for (const field of Object.keys(this.colorData)) {
+      // const rgb = this.colorData[field];
+      // const lock = this.colorData[field].lock;
+      const { rgb, lock } = this.colorData[field];
+      if (lock) {
+        locked.push(field);
+        lockedR.push(rgb[0]);
+        lockedG.push(rgb[1]);
+        lockedB.push(rgb[2]);
+      }
+    }
+
+    let baseR = lockedR.reduce((sum, value) => sum + value) / lockedR.length;
+    let baseG = lockedG.reduce((sum, value) => sum + value) / lockedR.length;
+    let baseB = lockedB.reduce((sum, value) => sum + value) / lockedR.length;
+
+    if (!a.lock) {
+      let red = random(0, 255);
+      let green = random(0, 255);
+      let blue = random(0, 255);
+
+      red = Math.floor((red + baseR) / 2);
+      green = Math.floor((green + baseG) / 2);
+      blue = Math.floor((blue + baseB) / 2);
+
+      a.rgb = [red, green, blue];
+    }
+
+    if (!b.lock) {
+      let red = random(0, a.rgb[0]);
+      let green = random(0, a.rgb[1]);
+      let blue = random(0, a.rgb[2]);
+
+      red = Math.floor((red + a.rgb[0]) / 2);
+      green = Math.floor((green + a.rgb[1]) / 2);
+      blue = Math.floor((blue + a.rgb[2]) / 2);
+
+      while (
+        Math.abs(a.rgb[0] - red) < 10 &&
+        Math.abs(a.rgb[1] - green) < 10 &&
+        Math.abs(a.rgb[2] - blue) < 10
+      ) {
+        red = random(0, a.rgb[0]);
+        green = random(0, a.rgb[1]);
+        blue = random(0, a.rgb[2]);
+
+        red = Math.floor((red + a.rgb[0]) / 2);
+        green = Math.floor((green + a.rgb[1]) / 2);
+        blue = Math.floor((blue + a.rgb[2]) / 2);
+      }
+
+      b.rgb = [red, green, blue];
+    }
+
+    if (!c.lock) {
+      let red = random(0, 255);
+      let green = random(0, 255);
+      let blue = random(0, 255);
+
+      red = Math.floor((red + b.rgb[0]) / 2);
+      green = Math.floor((green + b.rgb[1]) / 2);
+      blue = Math.floor((blue + b.rgb[2]) / 2);
+
+      while (
+        Math.abs(b.rgb[0] - red) < 10 &&
+        Math.abs(b.rgb[1] - green) < 10 &&
+        Math.abs(b.rgb[2] - blue) < 10
+      ) {
+        red = random(0, 255);
+        green = random(0, 255);
+        blue = random(0, 255);
+
+        red = Math.floor((red + b.rgb[0]) / 2);
+        green = Math.floor((green + b.rgb[1]) / 2);
+        blue = Math.floor((blue + b.rgb[2]) / 2);
+      }
+      c.rgb = [red, green, blue];
+    }
+
+    if (!d.lock) {
+      let red = random(0, 255);
+      let green = random(0, 255);
+      let blue = random(0, 255);
+
+      red = Math.floor((red + c.rgb[0] - 50) / 3);
+      green = Math.floor((green + c.rgb[1] - 50) / 3);
+      blue = Math.floor((blue + c.rgb[2] - 50) / 3);
+      d.rgb = [red, green, blue];
+    }
+
+    this.updateColorStyles();
+  }
+
   generateColors() {
+    const { a, b, c, d } = this.colorData;
     const random = (min, max) => {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
     // Color 1
-    // White Base
     let r1 = random(0, 255);
     let g1 = random(0, 255);
     let b1 = random(0, 255);
@@ -71,8 +154,7 @@ export class PaletteCardComponent implements OnInit {
     g1 = Math.floor((255 + g1) / 2);
     b1 = Math.floor((255 + b1) / 2);
 
-    this.colors[0] = [r1, g1, b1];
-    console.log(this.colorData);
+    a.rgb = [r1, g1, b1];
 
     // Color 2
     let r2 = random(0, r1);
@@ -96,7 +178,7 @@ export class PaletteCardComponent implements OnInit {
       g2 = Math.floor((g2 + g1) / 2);
       b2 = Math.floor((b2 + b1) / 2);
     }
-    this.colors[1] = [r2, g2, b2];
+    b.rgb = [r2, g2, b2];
 
     // Color 3
     let r3 = random(0, 255);
@@ -120,7 +202,7 @@ export class PaletteCardComponent implements OnInit {
       g3 = Math.floor((g2 + g1) / 2);
       b3 = Math.floor((b2 + b1) / 2);
     }
-    this.colors[2] = [r3, g3, b3];
+    c.rgb = [r3, g3, b3];
 
     // Color 4
     let r4 = random(0, r1);
@@ -130,7 +212,7 @@ export class PaletteCardComponent implements OnInit {
     r4 = Math.floor((r4 + r3 - 50) / 3);
     g4 = Math.floor((g4 + g3 - 50) / 3);
     b4 = Math.floor((b4 + b3 - 50) / 3);
-    this.colors[3] = [r4, g4, b4];
+    d.rgb = [r4, g4, b4];
 
     this.updateColorStyles();
   }
@@ -149,21 +231,14 @@ export class PaletteCardComponent implements OnInit {
   }
 
   updateColorStyles() {
-    this.color1 = this.getColorCode(this.colors[0]);
-    this.color1Text = this.getTextColor(this.colors[0]);
-    this.color1Value = this.rgbToHex(this.colors[0]);
+    for (const field of Object.keys(this.colorData)) {
+      const rgb = this.colorData[field].rgb;
+      this.colorData[field].rgbString = this.getColorCode(rgb);
 
-    this.color2 = this.getColorCode(this.colors[1]);
-    this.color2Text = this.getTextColor(this.colors[1]);
-    this.color2Value = this.rgbToHex(this.colors[1]);
+      this.colorData[field].textColor = this.getTextColor(rgb);
 
-    this.color3 = this.getColorCode(this.colors[2]);
-    this.color3Text = this.getTextColor(this.colors[2]);
-    this.color3Value = this.rgbToHex(this.colors[2]);
-
-    this.color4 = this.getColorCode(this.colors[3]);
-    this.color4Text = this.getTextColor(this.colors[3]);
-    this.color4Value = this.rgbToHex(this.colors[3]);
+      this.colorData[field].hex = this.rgbToHex(rgb);
+    }
   }
 
   rgbToHex(rgb) {
@@ -181,11 +256,7 @@ export class PaletteCardComponent implements OnInit {
   }
 
   toggleLock(lock) {
-    switch (lock) {
-      case 1:
-        this.color1lock = !this.color1lock;
-        break;
-    }
+    this.colorData[lock].lock = !this.colorData[lock].lock;
   }
 
   copyTextToClipboard(text) {
@@ -199,26 +270,18 @@ export class PaletteCardComponent implements OnInit {
     document.body.appendChild(txtArea);
     txtArea.select();
 
-    try {
-      var successful = document.execCommand('copy');
-      var msg = successful ? 'successful' : 'unsuccessful';
-      console.log('Copying text command was ' + msg);
-      if (successful) {
-        this.displayMessage('hex value copied to clipboard!');
-        return true;
-      }
-    } catch (err) {
-      console.log('Oops, unable to copy');
-    } finally {
-      document.body.removeChild(txtArea);
-    }
-    return false;
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+    this.displayMessage(`#${text} copied to clipboard!`);
+    return true;
+
+    document.body.removeChild(txtArea);
   }
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === ' ') {
-      this.generateColors();
+      this.generateColor();
     }
   }
 }
