@@ -1,3 +1,16 @@
-body {
-  background: #ffcccc;
+nav {
+  font-family: 'Cera GR Regular', Fallback, sans-serif !important;
+  font-size: 0.9rem;
+  color: #f38181;
+  text-align: right;
+  position: fixed;
+  right: 5vw;
+  top: 1.5vw;
+  z-index: 2;
+  text-transform: uppercase;
+}
+
+.links {
+  color: #f38181;
+  padding-left: 10px;
 }

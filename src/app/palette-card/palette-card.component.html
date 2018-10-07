@@ -1,4 +1,6 @@
-<div class="container">
+<div class="display-msg animated" [ngClass]="{'fadeIn': showMessage == true,'fadeOut': showMessage == false  }">{{message}}</div>
+
+<div class=" container">
   <div class="card">
     <div class="colors">
       <div class="color" id="color1" [ngStyle]="{'background-color':color1}">

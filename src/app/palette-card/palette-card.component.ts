@@ -25,8 +25,23 @@ export class PaletteCardComponent implements OnInit {
 
   colors = [];
 
+  message;
+  showMessage;
+
   ngOnInit() {
     this.generateColors();
+    this.displayMessage('press space to generate palettes');
+  }
+
+  displayMessage(str) {
+    this.message = str;
+    this.showMessage = true;
+    setTimeout(
+      function() {
+        this.showMessage = false;
+      }.bind(this),
+      1000
+    );
   }
 
   generateColors() {
@@ -34,27 +49,40 @@ export class PaletteCardComponent implements OnInit {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-    // const r1 = random(0, 255);
-    // const g1 = random(0, 255);
-    // const b1 = random(0, 255);
-
+    // White Base
     let r1 = random(0, 255);
     let g1 = random(0, 255);
     let b1 = random(0, 255);
 
+    // Color 1
     r1 = Math.floor((255 + r1) / 2);
     g1 = Math.floor((255 + g1) / 2);
     b1 = Math.floor((255 + b1) / 2);
 
     this.colors[0] = [r1, g1, b1];
 
-    let r2 = random(0, 255);
-    let g2 = random(0, 255);
-    let b2 = random(0, 255);
+    // Color 2
+    let r2 = random(0, r1);
+    let g2 = random(0, g1);
+    let b2 = random(0, b1);
 
     r2 = Math.floor((r2 + r1) / 2);
     g2 = Math.floor((g2 + g1) / 2);
     b2 = Math.floor((b2 + b1) / 2);
+
+    while (
+      Math.abs(r1 - r2) < 10 &&
+      Math.abs(b1 - b2) < 10 &&
+      Math.abs(g1 - g2) < 10
+    ) {
+      r2 = random(0, 255);
+      g2 = random(0, 255);
+      b2 = random(0, 255);
+
+      r2 = Math.floor((r2 + r1) / 2);
+      g2 = Math.floor((g2 + g1) / 2);
+      b2 = Math.floor((b2 + b1) / 2);
+    }
     this.colors[1] = [r2, g2, b2];
 
     let r3 = random(0, 255);
@@ -64,15 +92,29 @@ export class PaletteCardComponent implements OnInit {
     r3 = Math.floor((r3 + r2) / 2) - 20;
     g3 = Math.floor((g3 + g2) / 2) - 20;
     b3 = Math.floor((b3 + b2) / 2) - 20;
+
+    while (
+      Math.abs(r2 - r3) < 10 &&
+      Math.abs(b2 - b3) < 10 &&
+      Math.abs(g2 - g3) < 10
+    ) {
+      r3 = random(0, 255);
+      g3 = random(0, 255);
+      b3 = random(0, 255);
+
+      r3 = Math.floor((r2 + r1) / 2);
+      g3 = Math.floor((g2 + g1) / 2);
+      b3 = Math.floor((b2 + b1) / 2);
+    }
     this.colors[2] = [r3, g3, b3];
 
-    let r4 = random(0, 255);
-    let g4 = random(0, 255);
-    let b4 = random(0, 255);
+    let r4 = random(0, r1);
+    let g4 = random(0, r2);
+    let b4 = random(0, r3);
 
-    r4 = Math.floor((r4 + r3) / 2) - 50;
-    g4 = Math.floor((g4 + g3) / 2) - 50;
-    b4 = Math.floor((b4 + b3) / 2) - 50;
+    r4 = Math.floor((r4 + r3 - 50) / 3);
+    g4 = Math.floor((g4 + g3 - 50) / 3);
+    b4 = Math.floor((b4 + b3 - 50) / 3);
     this.colors[3] = [r4, g4, b4];
 
     this.updateColorStyles();
@@ -139,6 +181,7 @@ export class PaletteCardComponent implements OnInit {
       var msg = successful ? 'successful' : 'unsuccessful';
       console.log('Copying text command was ' + msg);
       if (successful) {
+        this.displayMessage('hex value copied to clipboard!');
         return true;
       }
     } catch (err) {

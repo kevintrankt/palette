@@ -17,9 +17,11 @@
   width: 422px;
   height: 444px;
 }
+
 .colors {
   margin-top: 44px;
 }
+
 .color {
   position: relative;
   height: 84px;
@@ -34,6 +36,7 @@
   bottom: 8px;
   left: 6px;
   margin: 0;
+  cursor: pointer;
 }
 
 .icon-container {
@@ -45,6 +48,15 @@
 .icon {
   color: #e1e1e1;
   font-size: 27px;
+  cursor: pointer;
+}
+.display-msg {
+  position: fixed;
+  top: 15vh;
+  width: 100%;
+  font-family: 'Rubik', sans-serif;
+  text-align: center;
+  color: #adadad;
 }
 
 #color1 {
