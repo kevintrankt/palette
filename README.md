@@ -4,7 +4,7 @@
 
 # Introduction
 
-A simple color palette generator built on Angula[https://kevintrankt.com/palette](https://kevintrankt.com/palette)
+A simple color palette generator built on Angular. [https://kevintrankt.com/palette](https://kevintrankt.com/palette)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
 
