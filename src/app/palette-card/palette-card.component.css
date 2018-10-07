@@ -50,6 +50,7 @@
   font-size: 27px;
   cursor: pointer;
 }
+
 .display-msg {
   position: fixed;
   top: 15vh;
@@ -57,6 +58,13 @@
   font-family: 'Rubik', sans-serif;
   text-align: center;
   color: #adadad;
+}
+
+.lock {
+  margin: 0;
+  position: absolute;
+  top: 8px;
+  right: 8px;
 }
 
 #color1 {

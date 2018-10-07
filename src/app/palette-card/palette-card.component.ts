@@ -8,27 +8,39 @@ import { HostListener } from '@angular/core';
 })
 export class PaletteCardComponent implements OnInit {
   constructor() {}
-  color1;
+  colorData = {};
+
+  color1; // rename to rgb String
   color2;
   color3;
   color4;
 
-  color1Text;
+  color1Text; // text color
   color2Text;
   color3Text;
   color4Text;
 
-  color1Value;
+  color1Value; // rename to hex
   color2Value;
   color3Value;
   color4Value;
 
-  colors = [];
+  colors = []; // rename to rgb
 
   message;
   showMessage;
 
+  color1lock = false; // rename to lock
+  color2lock = false;
+  color3lock = false;
+  color4lock = false;
+
   ngOnInit() {
+    this.colorData['a'] = {};
+    this.colorData['b'] = {};
+    this.colorData['c'] = {};
+    this.colorData['d'] = {};
+
     this.generateColors();
     this.displayMessage('press space to generate palettes');
   }
@@ -49,17 +61,18 @@ export class PaletteCardComponent implements OnInit {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
+    // Color 1
     // White Base
     let r1 = random(0, 255);
     let g1 = random(0, 255);
     let b1 = random(0, 255);
 
-    // Color 1
     r1 = Math.floor((255 + r1) / 2);
     g1 = Math.floor((255 + g1) / 2);
     b1 = Math.floor((255 + b1) / 2);
 
     this.colors[0] = [r1, g1, b1];
+    console.log(this.colorData);
 
     // Color 2
     let r2 = random(0, r1);
@@ -85,6 +98,7 @@ export class PaletteCardComponent implements OnInit {
     }
     this.colors[1] = [r2, g2, b2];
 
+    // Color 3
     let r3 = random(0, 255);
     let g3 = random(0, 255);
     let b3 = random(0, 255);
@@ -108,6 +122,7 @@ export class PaletteCardComponent implements OnInit {
     }
     this.colors[2] = [r3, g3, b3];
 
+    // Color 4
     let r4 = random(0, r1);
     let g4 = random(0, r2);
     let b4 = random(0, r3);
@@ -163,6 +178,14 @@ export class PaletteCardComponent implements OnInit {
       .join('')
       .toUpperCase();
     return `${hex}`;
+  }
+
+  toggleLock(lock) {
+    switch (lock) {
+      case 1:
+        this.color1lock = !this.color1lock;
+        break;
+    }
   }
 
   copyTextToClipboard(text) {

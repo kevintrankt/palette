@@ -4,17 +4,33 @@
   <div class="card">
     <div class="colors">
       <div class="color" id="color1" [ngStyle]="{'background-color':color1}">
+        <p class="lock" [ngStyle]="{'color':color1Text}">
+          <i (click)="toggleLock(1)" *ngIf="!color1lock" class="fas fa-unlock-alt"></i>
+          <i (click)="toggleLock(1)" *ngIf="color1lock" class="fas fa-lock"></i>
+        </p>
         <p class="color-hex" [ngStyle]="{'color':color1Text}" (click)="copyTextToClipboard(color1Value)">#{{color1Value}}</p>
       </div>
       <div class="color" id="color2" [ngStyle]="{'background-color':color2}">
+        <p class="lock" [ngStyle]="{'color':color2Text}">
+          <i *ngIf="!color2lock" class="fas fa-unlock-alt"></i>
+          <i *ngIf="color2lock" class="fas fa-lock"></i>
+        </p>
         <p class="color-hex" [ngStyle]="{'color':color2Text}" (click)="copyTextToClipboard(color2Value)">#{{color2Value}}</p>
 
       </div>
       <div class="color" id="color3" [ngStyle]="{'background-color':color3}">
+        <p class="lock" [ngStyle]="{'color':color3Text}">
+          <i *ngIf="!color3lock" class="fas fa-unlock-alt"></i>
+          <i *ngIf="color3lock" class="fas fa-lock"></i>
+        </p>
         <p class="color-hex" [ngStyle]="{'color':color3Text}" (click)="copyTextToClipboard(color3Value)">#{{color3Value}}</p>
 
       </div>
       <div class="color" id="color4" [ngStyle]="{'background-color':color4}">
+        <p class="lock" [ngStyle]="{'color':color4Text}">
+          <i *ngIf="!color4lock" class="fas fa-unlock-alt"></i>
+          <i *ngIf="color4lock" class="fas fa-lock"></i>
+        </p>
         <p class="color-hex" [ngStyle]="{'color':color4Text}" (click)="copyTextToClipboard(color4Value)">#{{color4Value}}</p>
 
       </div>
