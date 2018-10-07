@@ -8,12 +8,13 @@ import { HostListener } from '@angular/core';
 })
 export class PaletteCardComponent implements OnInit {
   constructor() {}
-  colorData = {};
+  colorData;
 
   message;
   showMessage;
 
   ngOnInit() {
+    this.colorData = {};
     this.colorData['a'] = { lock: false };
     this.colorData['b'] = { lock: false };
     this.colorData['c'] = { lock: false };
@@ -270,12 +271,20 @@ export class PaletteCardComponent implements OnInit {
     document.body.appendChild(txtArea);
     txtArea.select();
 
-    var successful = document.execCommand('copy');
-    var msg = successful ? 'successful' : 'unsuccessful';
-    this.displayMessage(`#${text} copied to clipboard!`);
-    return true;
-
-    document.body.removeChild(txtArea);
+    try {
+      var successful = document.execCommand('copy');
+      var msg = successful ? 'successful' : 'unsuccessful';
+      console.log('Copying text command was ' + msg);
+      if (successful) {
+        this.displayMessage('hex value copied to clipboard!');
+        return true;
+      }
+    } catch (err) {
+      console.log('Oops, unable to copy');
+    } finally {
+      document.body.removeChild(txtArea);
+    }
+    return false;
   }
 
   @HostListener('document:keypress', ['$event'])
