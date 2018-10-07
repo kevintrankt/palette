@@ -23,6 +23,7 @@ export class PaletteCardComponent implements OnInit {
 
     // this.generateColors();
     this.generateColor();
+    // this.generateColors();
     this.displayMessage('press space to generate palettes');
   }
 
@@ -36,6 +37,78 @@ export class PaletteCardComponent implements OnInit {
       2000
     );
   }
+
+  // generateColors() {
+  //   const { a, b, c, d } = this.colorData;
+  //   const random = (min, max) => {
+  //     return Math.floor(Math.random() * (max - min + 1) + min);
+  //   };
+  //   let startingHue = random(0, 360);
+  //   let startingSat = random(20, 100);
+  //   let startingLight = random(20, 70);
+
+  //   let secondHueOffset = random(40, 160);
+  //   let secondHue;
+  //   if (secondHueOffset + startingHue > 360) {
+  //     secondHue = secondHueOffset + startingHue - 360;
+  //   } else {
+  //     secondHue = secondHueOffset + startingHue;
+  //   }
+
+  //   let modifier = (secondHueOffset / 360) * 100;
+  //   let satMultiplier = modifier * 1.6;
+  //   let secondSat = random(satMultiplier * 0.9, satMultiplier);
+
+  //   let lightMultiplier = modifier * 1.5;
+  //   let secondLight = random(lightMultiplier * 0.9, lightMultiplier);
+
+  //   console.log(startingHue);
+  //   console.log(startingSat);
+  //   console.log(startingLight);
+  //   console.log('modifier', modifier);
+  //   console.log('offset', secondHueOffset);
+
+  //   let thirdHueOffset = random(40, 160);
+  //   let thirdHue;
+  //   if (startingHue - thirdHueOffset < 0) {
+  //     thirdHue = startingHue - thirdHueOffset + 360;
+  //   } else {
+  //     thirdHue = startingHue - thirdHueOffset;
+  //   }
+
+  //   modifier = (thirdHueOffset / 360) * 100;
+  //   satMultiplier = modifier * 1.6;
+  //   let thirdSat = random(satMultiplier * 0.9, satMultiplier);
+
+  //   lightMultiplier = modifier * 1.5;
+  //   let thirdLight = random(lightMultiplier * 0.9, lightMultiplier);
+
+  //   // 4th color
+  //   let fourthSat = 100 - (startingSat + secondSat + thirdSat) / 3;
+  //   let fourthLight = 100 - (startingLight + secondLight + thirdLight) / 3;
+  //   let fourthHueOffset = ((fourthSat + fourthLight) / 200) * 160;
+  //   let fourthHue;
+  //   if (fourthHueOffset + startingHue > 360) {
+  //     fourthHue = fourthHueOffset + startingHue - 360;
+  //   } else {
+  //     fourthHue = fourthHueOffset + startingHue;
+  //   }
+
+  //   console.log(secondHue);
+  //   console.log(secondSat);
+  //   console.log(secondLight);
+
+  //   console.log('modifier', modifier);
+  //   console.log('offset', thirdHueOffset);
+
+  //   console.log(thirdHue);
+  //   console.log(thirdSat);
+  //   console.log(thirdLight);
+
+  //   console.log(fourthHue);
+  //   console.log(fourthSat);
+  //   console.log(fourthLight);
+  // }
 
   generateColor() {
     const { a, b, c, d } = this.colorData;
@@ -102,14 +175,21 @@ export class PaletteCardComponent implements OnInit {
       green = Math.floor((green + a.rgb[1]) / 2);
       blue = Math.floor((blue + a.rgb[2]) / 2);
 
+      let inits = 0;
+
       while (
-        Math.abs(a.rgb[0] - red) < 10 &&
-        Math.abs(a.rgb[1] - green) < 10 &&
-        Math.abs(a.rgb[2] - blue) < 10
+        (Math.abs(a.rgb[0] - red) < 15 &&
+          Math.abs(a.rgb[1] - green) < 15 &&
+          Math.abs(a.rgb[2] - blue) < 15) ||
+        a.rgb.reduce((sum, value) => sum + value) < red + green + blue
       ) {
-        red = random(0, a.rgb[0]);
-        green = random(0, a.rgb[1]);
-        blue = random(0, a.rgb[2]);
+        inits++;
+        if (inits === 20) {
+          break;
+        }
+        red = random(0, 255);
+        green = random(0, 255);
+        blue = random(0, 255);
 
         red = Math.floor((red + a.rgb[0]) / 2);
         green = Math.floor((green + a.rgb[1]) / 2);
@@ -128,11 +208,18 @@ export class PaletteCardComponent implements OnInit {
       green = Math.floor((green + b.rgb[1]) / 2);
       blue = Math.floor((blue + b.rgb[2]) / 2);
 
+      let inits = 0;
+
       while (
-        Math.abs(b.rgb[0] - red) < 10 &&
-        Math.abs(b.rgb[1] - green) < 10 &&
-        Math.abs(b.rgb[2] - blue) < 10
+        (Math.abs(b.rgb[0] - red) < 10 &&
+          Math.abs(b.rgb[1] - green) < 10 &&
+          Math.abs(b.rgb[2] - blue) < 10) ||
+        b.rgb.reduce((sum, value) => sum + value) < red + green + blue
       ) {
+        inits++;
+        if (inits === 20) {
+          break;
+        }
         red = random(0, 255);
         green = random(0, 255);
         blue = random(0, 255);
@@ -149,9 +236,9 @@ export class PaletteCardComponent implements OnInit {
       let green = random(0, 255);
       let blue = random(0, 255);
 
-      red = Math.floor((red + c.rgb[0] - 50) / 3);
-      green = Math.floor((green + c.rgb[1] - 50) / 3);
-      blue = Math.floor((blue + c.rgb[2] - 50) / 3);
+      red = Math.floor((red + c.rgb[0]) / 3);
+      green = Math.floor((green + c.rgb[1]) / 3);
+      blue = Math.floor((blue + c.rgb[2]) / 3);
       d.rgb = [red, green, blue];
     }
 
@@ -260,7 +347,7 @@ export class PaletteCardComponent implements OnInit {
       }
     }
 
-    let re = new RegExp('[a-fA-F0-9]');
+    const re = new RegExp('[a-fA-F0-9]');
 
     if ((len >= 6 && selection === 'Caret') || !re.test(event.key)) {
       event.preventDefault();

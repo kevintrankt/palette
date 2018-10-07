@@ -96,4 +96,14 @@
   .card {
     width: 95%;
   }
+
+  .display-msg {
+    top: 7vw;
+    left: 8px;
+    width: 100%;
+    font-family: 'Rubik', sans-serif;
+    text-align: left;
+    color: #adadad;
+    font-size: 0.75em;
+  }
 }
