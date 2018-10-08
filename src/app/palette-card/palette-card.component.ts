@@ -20,6 +20,7 @@ export class PaletteCardComponent implements OnInit {
   lockedAmt;
 
   initialized;
+  generating;
 
   ngOnInit() {
     this.colorData = {};
@@ -48,6 +49,7 @@ export class PaletteCardComponent implements OnInit {
 
   generateColor() {
     this.runs++;
+    this.generating = true;
 
     switch (this.runs) {
       case 2:
@@ -95,6 +97,7 @@ export class PaletteCardComponent implements OnInit {
         () => {
           this.loadColors();
           this.initialized = true;
+          this.generating = false;
         }
       );
     }

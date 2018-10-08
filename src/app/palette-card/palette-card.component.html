@@ -2,10 +2,10 @@
   {{message}}
 </div>
 
-<div class=" container" *ngIf="initialized">
+<div class=" container">
   <div class="card">
 
-    <div class="colors">
+    <div class="colors" *ngIf="initialized">
 
       <div class="color" id="color1" [ngStyle]="{'background-color':colorData.a.rgbString}">
         <p class="action-icons" [ngStyle]="{'color':colorData.a.textColor}">
@@ -64,7 +64,7 @@
 
       <div class="
             icon-container">
-        <i class="fas fa-redo-alt icon" (click)="generateColor()"></i>
+        <i class="fas fa-redo-alt icon" (click)="generateColor()" [ngClass]="{'fa-spin': generating == true}"></i>
       </div>
 
     </div>
