@@ -24,7 +24,7 @@
 
 .color {
   position: relative;
-  height: 84px;
+  height: 67px;
   margin-right: 28px;
   margin-left: 28px;
 }
@@ -86,7 +86,7 @@
   /* background: #f5efe3; */
 }
 
-#color4 {
+#color5 {
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;
   /* background: #a6aa9c; */

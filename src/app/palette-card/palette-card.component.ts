@@ -63,17 +63,25 @@ export class PaletteCardComponent implements OnInit {
         break;
     }
 
-    const locked = [];
+    // const locked = [];
+    const locked = ['N', 'N', 'N', 'N', 'N'];
+    let count = 0;
+    let index = 0;
     for (const field of Object.keys(this.colorData)) {
       const { rgb, lock } = this.colorData[field];
       if (lock) {
-        locked.push(rgb);
+        // locked.push(rgb);
+        locked[index] = rgb;
+        count++;
       }
+      index++;
     }
+    const models = ['default', 'makoto_shinkai', 'flower_photography'];
+    const randModel = models[Math.floor(Math.random() * 2)];
 
-    this.lockedAmt = locked.length;
+    this.lockedAmt = count;
     console.log(this.lockedAmt);
-    if (this.lockedAmt === 4) {
+    if (this.lockedAmt === 5) {
       this.displayMessage('press r to unlock all colors');
     } else {
       for (let i = 0; i < 5; i++) {
@@ -81,7 +89,7 @@ export class PaletteCardComponent implements OnInit {
           locked[i] = 'N';
         }
       }
-      this.colormind.getColors(locked).subscribe(
+      this.colormind.getColors(randModel, locked).subscribe(
         data => (this.colormindResponse = data),
         error => console.log(error),
         () => {
@@ -96,35 +104,27 @@ export class PaletteCardComponent implements OnInit {
     const { result } = this.colormindResponse;
     const { a, b, c, d, e } = this.colorData;
 
-    result.sort(
-      (y, z) => z.reduce((sum, x) => sum + x) - y.reduce((sum, x) => sum + x)
-    );
-
     let i = 0 + this.lockedAmt;
+    console.log(this.lockedAmt);
 
     if (!a.lock) {
-      a.rgb = result[i];
-      i++;
+      a.rgb = result[0];
     }
 
     if (!b.lock) {
-      b.rgb = result[i];
-      i++;
+      b.rgb = result[1];
     }
 
     if (!c.lock) {
-      c.rgb = result[i];
-      i++;
+      c.rgb = result[2];
     }
 
     if (!d.lock) {
-      d.rgb = result[i];
-      i++;
+      d.rgb = result[3];
     }
 
     if (!e.lock) {
-      e.rgb = result[i];
-      i++;
+      e.rgb = result[4];
     }
 
     this.updateColorStyles();
