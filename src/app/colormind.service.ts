@@ -10,7 +10,7 @@ export class ColormindService {
   getColors(model, input) {
     const url = 'http://colormind.io/api/';
     const data = {
-      model,
+      model: 'default',
       input
     };
     console.log(data);
