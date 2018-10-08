@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HostListener } from '@angular/core';
+import { ColormindService } from '../colormind.service';
 
 @Component({
   selector: 'app-palette-card',
@@ -7,12 +8,16 @@ import { HostListener } from '@angular/core';
   styleUrls: ['./palette-card.component.css']
 })
 export class PaletteCardComponent implements OnInit {
-  constructor() {}
+  constructor(private colormind: ColormindService) {}
   colorData;
 
   message;
   showMessage;
   runs = 0;
+
+  colormindResponse;
+
+  lockedAmt;
 
   ngOnInit() {
     this.colorData = {};
@@ -21,9 +26,9 @@ export class PaletteCardComponent implements OnInit {
     this.colorData['c'] = { lock: false };
     this.colorData['d'] = { lock: false };
 
-    // this.generateColors();
     this.generateColor();
-    // this.generateColors();
+    // this.generateColorRGB();
+
     this.displayMessage('press space to generate palettes');
   }
 
@@ -38,79 +43,64 @@ export class PaletteCardComponent implements OnInit {
     );
   }
 
-  // generateColors() {
-  //   const { a, b, c, d } = this.colorData;
-  //   const random = (min, max) => {
-  //     return Math.floor(Math.random() * (max - min + 1) + min);
-  //   };
-  //   let startingHue = random(0, 360);
-  //   let startingSat = random(20, 100);
-  //   let startingLight = random(20, 70);
-
-  //   let secondHueOffset = random(40, 160);
-  //   let secondHue;
-  //   if (secondHueOffset + startingHue > 360) {
-  //     secondHue = secondHueOffset + startingHue - 360;
-  //   } else {
-  //     secondHue = secondHueOffset + startingHue;
-  //   }
-
-  //   let modifier = (secondHueOffset / 360) * 100;
-  //   let satMultiplier = modifier * 1.6;
-  //   let secondSat = random(satMultiplier * 0.9, satMultiplier);
-
-  //   let lightMultiplier = modifier * 1.5;
-  //   let secondLight = random(lightMultiplier * 0.9, lightMultiplier);
-
-  //   console.log(startingHue);
-  //   console.log(startingSat);
-  //   console.log(startingLight);
-  //   console.log('modifier', modifier);
-  //   console.log('offset', secondHueOffset);
-
-  //   let thirdHueOffset = random(40, 160);
-  //   let thirdHue;
-  //   if (startingHue - thirdHueOffset < 0) {
-  //     thirdHue = startingHue - thirdHueOffset + 360;
-  //   } else {
-  //     thirdHue = startingHue - thirdHueOffset;
-  //   }
-
-  //   modifier = (thirdHueOffset / 360) * 100;
-  //   satMultiplier = modifier * 1.6;
-  //   let thirdSat = random(satMultiplier * 0.9, satMultiplier);
-
-  //   lightMultiplier = modifier * 1.5;
-  //   let thirdLight = random(lightMultiplier * 0.9, lightMultiplier);
-
-  //   // 4th color
-  //   let fourthSat = 100 - (startingSat + secondSat + thirdSat) / 3;
-  //   let fourthLight = 100 - (startingLight + secondLight + thirdLight) / 3;
-  //   let fourthHueOffset = ((fourthSat + fourthLight) / 200) * 160;
-  //   let fourthHue;
-  //   if (fourthHueOffset + startingHue > 360) {
-  //     fourthHue = fourthHueOffset + startingHue - 360;
-  //   } else {
-  //     fourthHue = fourthHueOffset + startingHue;
-  //   }
-
-  //   console.log(secondHue);
-  //   console.log(secondSat);
-  //   console.log(secondLight);
-
-  //   console.log('modifier', modifier);
-  //   console.log('offset', thirdHueOffset);
-
-  //   console.log(thirdHue);
-  //   console.log(thirdSat);
-  //   console.log(thirdLight);
-
-  //   console.log(fourthHue);
-  //   console.log(fourthSat);
-  //   console.log(fourthLight);
-  // }
-
   generateColor() {
+    const locked = [];
+    for (const field of Object.keys(this.colorData)) {
+      const { rgb, lock } = this.colorData[field];
+      if (lock) {
+        locked.push(rgb);
+      }
+    }
+
+    this.lockedAmt = locked.length;
+
+    for (let i = 0; i < 5; i++) {
+      if (!locked[i]) {
+        locked[i] = 'N';
+      }
+    }
+
+    console.log(locked);
+    this.colormind.getColors(locked).subscribe(
+      data => (this.colormindResponse = data),
+      error => console.log(error),
+      () => {
+        console.log('news:', this.colormindResponse);
+        this.loadColors();
+      }
+    );
+  }
+
+  loadColors() {
+    const { result } = this.colormindResponse;
+    const { a, b, c, d } = this.colorData;
+
+    let i = 0 + this.lockedAmt;
+
+    if (!a.lock) {
+      a.rgb = result[i];
+      i++;
+    }
+
+    if (!b.lock) {
+      b.rgb = result[i];
+      i++;
+    }
+
+    if (!c.lock) {
+      c.rgb = result[i];
+      i++;
+    }
+
+    if (!d.lock) {
+      d.rgb = result[i];
+      i++;
+    }
+
+    this.updateColorStyles();
+  }
+
+  generateColorRGB() {
     const { a, b, c, d } = this.colorData;
     const random = (min, max) => {
       return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -131,6 +121,7 @@ export class PaletteCardComponent implements OnInit {
       default:
         break;
     }
+
     const locked = [];
     const lockedR = [255];
     const lockedG = [255];
@@ -159,9 +150,13 @@ export class PaletteCardComponent implements OnInit {
       let green = random(0, 255);
       let blue = random(0, 255);
 
-      red = Math.floor((red + baseR) / 2);
-      green = Math.floor((green + baseG) / 2);
-      blue = Math.floor((blue + baseB) / 2);
+      const rDiv = random(2, 3);
+      const gDiv = random(2, 3);
+      const bDiv = random(2, 3);
+
+      red = Math.floor((red + baseR) / rDiv);
+      green = Math.floor((green + baseG) / gDiv);
+      blue = Math.floor((blue + baseB) / bDiv);
 
       a.rgb = [red, green, blue];
     }
@@ -204,9 +199,9 @@ export class PaletteCardComponent implements OnInit {
       let green = random(0, 255);
       let blue = random(0, 255);
 
-      red = Math.floor((red + b.rgb[0]) / 2);
-      green = Math.floor((green + b.rgb[1]) / 2);
-      blue = Math.floor((blue + b.rgb[2]) / 2);
+      red = Math.floor((red + a.rgb[0]) / 2);
+      green = Math.floor((green + a.rgb[1]) / 2);
+      blue = Math.floor((blue + a.rgb[2]) / 2);
 
       let inits = 0;
 
@@ -224,9 +219,9 @@ export class PaletteCardComponent implements OnInit {
         green = random(0, 255);
         blue = random(0, 255);
 
-        red = Math.floor((red + b.rgb[0]) / 2);
-        green = Math.floor((green + b.rgb[1]) / 2);
-        blue = Math.floor((blue + b.rgb[2]) / 2);
+        red = Math.floor((red + a.rgb[0]) / 2);
+        green = Math.floor((green + a.rgb[1]) / 2);
+        blue = Math.floor((blue + a.rgb[2]) / 2);
       }
       c.rgb = [red, green, blue];
     }
@@ -236,9 +231,9 @@ export class PaletteCardComponent implements OnInit {
       let green = random(0, 255);
       let blue = random(0, 255);
 
-      red = Math.floor((red + c.rgb[0]) / 3);
-      green = Math.floor((green + c.rgb[1]) / 3);
-      blue = Math.floor((blue + c.rgb[2]) / 3);
+      red = Math.floor((red + a.rgb[0]) / 3);
+      green = Math.floor((green + a.rgb[1]) / 3);
+      blue = Math.floor((blue + a.rgb[2]) / 3);
       d.rgb = [red, green, blue];
     }
 
@@ -358,6 +353,31 @@ export class PaletteCardComponent implements OnInit {
 
   clickHex() {
     this.displayMessage('enter your own colors!');
+  }
+
+  hslToRgb(h, s, l) {
+    var r, g, b;
+
+    if (s == 0) {
+      r = g = b = l; // achromatic
+    } else {
+      var hue2rgb = function hue2rgb(p, q, t) {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1 / 6) return p + (q - p) * 6 * t;
+        if (t < 1 / 2) return q;
+        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+        return p;
+      };
+
+      var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      var p = 2 * l - q;
+      r = hue2rgb(p, q, h + 1 / 3);
+      g = hue2rgb(p, q, h);
+      b = hue2rgb(p, q, h - 1 / 3);
+    }
+
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
   }
 
   @HostListener('document:keypress', ['$event'])
