@@ -13,6 +13,7 @@ export class ColormindService {
       model: 'default',
       input
     };
+    console.log(data);
 
     return this.http.post(url, JSON.stringify(data));
   }
