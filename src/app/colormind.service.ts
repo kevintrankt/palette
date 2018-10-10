@@ -7,12 +7,20 @@ import { HttpClient } from '@angular/common/http';
 export class ColormindService {
   constructor(private http: HttpClient) {}
 
-  getColors(model, input) {
+  getColors(model, input, lock) {
     const url = 'http://colormind.io/api/';
-    const data = {
-      model: 'default',
-      input
-    };
+    let data;
+    if (lock) {
+      data = {
+        model: 'default',
+        input
+      };
+    } else {
+      data = {
+        model: 'default'
+      };
+    }
+
     console.log(data);
 
     return this.http.post(url, JSON.stringify(data));

@@ -69,12 +69,14 @@ export class PaletteCardComponent implements OnInit {
     const locked = ['N', 'N', 'N', 'N', 'N'];
     let count = 0;
     let index = 0;
+    let lockColors = false;
     for (const field of Object.keys(this.colorData)) {
       const { rgb, lock } = this.colorData[field];
       if (lock) {
         // locked.push(rgb);
         locked[index] = rgb;
         count++;
+        lockColors = true;
       }
       index++;
     }
@@ -91,7 +93,7 @@ export class PaletteCardComponent implements OnInit {
           locked[i] = 'N';
         }
       }
-      this.colormind.getColors(randModel, locked).subscribe(
+      this.colormind.getColors(randModel, locked, lockColors).subscribe(
         data => (this.colormindResponse = data),
         error => console.log(error),
         () => {

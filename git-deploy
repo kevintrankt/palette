@@ -1,4 +1,7 @@
 #!/bin/sh
+ng build --prod --base-href /palette/
+git add -A && git commit -m "$1"
+git push
 git subtree split --prefix dist/palette-generator -b gh-pages
 git push -f origin gh-pages:gh-pages
 git branch -D gh-pages
