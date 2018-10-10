@@ -4,7 +4,7 @@
 
 # Introduction
 
-A simple color palette generator built on Angular. [https://kevintrankt.com/palette](http://kevintrankt.com/palette)
+A simple color palette generator built on Angular. [http://kevintrankt.com/palette](http://kevintrankt.com/palette)
 
 The web application generates four colors for a palette at every reload. Colors within a palette can be locked. The application will generate colors similar to the locked colors. Users can also enter their own hex color codes in to generate colors based on their input.
 
