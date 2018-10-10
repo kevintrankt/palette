@@ -80,8 +80,15 @@ export class PaletteCardComponent implements OnInit {
       }
       index++;
     }
-    const models = ['default', 'makoto_shinkai', 'flower_photography'];
-    const randModel = models[Math.floor(Math.random() * 2)];
+    const models = [
+      'ui',
+      'default',
+      'sunset_photography',
+      'american_revolutionary_art',
+      'metroid_fusion',
+      'raise_the_red_lantern'
+    ];
+    const randModel = models[Math.floor(Math.random() * models.length - 1)];
 
     this.lockedAmt = count;
     console.log(this.lockedAmt);

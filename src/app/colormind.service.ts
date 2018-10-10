@@ -12,12 +12,12 @@ export class ColormindService {
     let data;
     if (lock) {
       data = {
-        model: 'default',
+        model,
         input
       };
     } else {
       data = {
-        model: 'default'
+        model
       };
     }
 
